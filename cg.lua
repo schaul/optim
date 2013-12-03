@@ -11,15 +11,17 @@
 -- ARGS:
 -- opfunc : a function that takes a single input, the point of evaluation.
 -- x      : the initial point
+-- config : a table with hyperparameters
+--   config.maxEval     : max number of function evaluations
+--   config.maxIter     : max number of iterations
+--
 -- state : a table of parameters and temporary allocations.
---   state.maxEval     : max number of function evaluations
---   state.maxIter     : max number of iterations
 --   state.df[0,1,2,3] : if you pass torch.Tensor they will be used for temp storage
 --   state.[s,x0]      : if you pass torch.Tensor they will be used for temp storage
 --
 -- RETURN:
 -- x* : the new x vector, at the optimal point
--- f  : a table of all function values: 
+-- f  : a table of all function values:
 --      f[1] is the value of the function before any optimization
 --      f[#f] is the final fully optimized value, at x*
 --

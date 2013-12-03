@@ -2,18 +2,20 @@
 -- A plain implementation of SGD
 --
 -- ARGS:
--- opfunc : a function that takes a single input (X), the point of 
+-- opfunc : a function that takes a single input (X), the point of
 --          evaluation, and returns f(X) and df/dX
 -- x      : the initial point
+-- config : a table with hyperparameters
+--   config.learningRate      : learning rate
+--   config.learningRateDecay : learning rate decay
+--   config.weightDecay       : weight decay
+--   config.momentum          : momentum
+--   config.dampening         : dampening for momentum
+--   config.nesterov          : enables Nesterov momentum
+--   config.learningRates     : vector of individual learning rates
+--
 -- state  : a table describing the state of the optimizer; after each
 --          call the state is modified
---   state.learningRate      : learning rate
---   state.learningRateDecay : learning rate decay
---   state.weightDecay       : weight decay
---   state.momentum          : momentum
---   state.dampening         : dampening for momentum
---   state.nesterov          : enables Nesterov momentum
---   state.learningRates     : vector of individual learning rates
 --
 -- RETURN:
 -- x     : the new x vector
@@ -60,7 +62,7 @@ function optim.sgd(opfunc, x, config, state)
 
    -- (4) learning rate decay (annealing)
    local clr = lr / (1 + nevals*lrd)
-   
+
    -- (5) parameter update with single or individual learning rates
    if lrs then
       if not state.deltaParameters then

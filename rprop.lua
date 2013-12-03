@@ -2,17 +2,19 @@
 -- A plain implementation of RPROP
 --
 -- ARGS:
--- opfunc : a function that takes a single input (X), the point of 
+-- opfunc : a function that takes a single input (X), the point of
 --          evaluation, and returns f(X) and df/dX
 -- x      : the initial point
+-- config : a table with hyperparameters
+--  config.stepsize = initial step size, common to all components
+--  config.etaplus = multiplicative increase factor, > 1 (default 1.2)
+--  config.etaminus = multiplicative decrease factor, < 1 (default 0.5)
+--  config.stepsizemax = maximum stepsize allowed (default 50)
+--  config.stepsizemin = minimum stepsize allowed (default 1e-6)
+--  config.niter = number of iterations (default 1)
+--
 -- state  : a table describing the state of the optimizer; after each
 --          call the state is modified
---  state.stepsize = initial step size, common to all components
---  state.etaplus = multiplicative increase factor, > 1 (default 1.2)
---  state.etaminus = multiplicative decrease factor, < 1 (default 0.5)
---  state.stepsizemax = maximum stepsize allowed (default 50)
---  state.stepsizemin = minimum stepsize allowed (default 1e-6)
---  state.niter = number of iterations (default 1)
 --
 -- RETURN:
 -- x     : the new x vector
@@ -80,7 +82,7 @@ function optim.rprop(opfunc, x, config, state)
         -- for dir<0, dfdx=0
         -- for dir>=0 dfdx=dfdx
         dfdx[state.nsign] = 0
-        -- state.sign = sign(dfdx) 
+        -- state.sign = sign(dfdx)
         torch.sign(state.sign,dfdx)
 
         -- update weights
